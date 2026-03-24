@@ -1,0 +1,19 @@
+{
+	"name": "fivem-ts-template",
+	"version": "1.0.0",
+	"scripts": {
+		"build": "node .build/esbuild.js",
+		"dev": "node .build/esbuild.js --watch",
+		"build:prod": "node .build/esbuild.js --mode=production"
+	},
+	"description": "A TypeScript template for FiveM resources.",
+	"devDependencies": {
+		"javascript-obfuscator": "^4.1.1",
+		"source-map-support": "^0.5.21",
+		"@citizenfx/client": "latest",
+        "@citizenfx/server": "latest",
+		"typescript": "^4.5.5",
+		"esbuild": "^0.14.12",
+		"@types/node": "^22"
+	}
+}

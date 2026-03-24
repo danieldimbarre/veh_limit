@@ -1,0 +1,2 @@
+
+const SHARED = 'TEMPLATE SHARED';
