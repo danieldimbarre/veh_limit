@@ -21,53 +21,6 @@ const watchMode = process.argv.findIndex((arg) => arg === '--watch') >= 0;
             format: 'iife',
         },
         {
-            label: 'server',
-            platform: 'node',
-            entryPoints: ['./src/server/index.ts'],
-            target: ['node16'],
-            external: [],
-            inject: [],
-            format: 'cjs',
-            define: {
-                require: 'requireTo',
-            },
-            plugins: [
-                {
-                    name: 'ts-paths',
-                    setup: (build) => {
-                        build.onResolve({ filter: /@citizenfx/ }, () => {
-                            return { namespace: 'ignore', path: '.' };
-                        });
-
-                        build.onResolve({ filter: /.*/ }, (args) => {
-                            if (!args.path.match(/^@(server|client|common)/) && args.kind === 'import-statement') {
-                                if (!args.path.startsWith('@/')) {
-                                    return {
-                                        path: args.path,
-                                        external: true,
-                                    };
-                                }
-
-                                let modulePath;
-                                if (args.path.startsWith('@/')) {
-                                    modulePath = path.join(...process.cwd().split(path.sep), args.path.replace(/^@\//, ''));
-                                }
-
-                                return {
-                                    path: modulePath,
-                                    external: true,
-                                };
-                            }
-                        });
-
-                        build.onLoad({ filter: /.*/, namespace: 'ignore' }, () => {
-                            return { contents: '' };
-                        });
-                    },
-                },
-            ],
-        },
-        {
             label: 'shared',
             platform: 'neutral',
             entryPoints: ['./src/shared/index.ts'],

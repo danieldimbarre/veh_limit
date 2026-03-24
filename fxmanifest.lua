@@ -9,7 +9,6 @@ files {
     'dist/shared/**/*.js'
 }
 
-server_script 'dist/server/**/*.js'
 client_script 'dist/client/**/*.js'
 
 node_version '22'
