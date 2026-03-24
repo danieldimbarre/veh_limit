@@ -1,3 +1,10 @@
+const VEHICLE_CLASSES_IGNORE = [
+    13, // Cycles
+    14, // Boats
+    15, // Helicopters
+    16, // Planes
+];
+
 let lastVehicle: number | null = null;
 
 setInterval(() => {
@@ -9,12 +16,15 @@ setInterval(() => {
     if (NetworkGetEntityOwner(vehicle) !== PlayerId())
         return;
 
-    const maxVelocity = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fInitialDriveMaxFlatVel') * 0.3704;
-
     if (lastVehicle == vehicle)
         return;
 
-    SetVehicleMaxSpeed(vehicle, maxVelocity);
-
     lastVehicle = vehicle;
+
+    if (VEHICLE_CLASSES_IGNORE.includes(GetVehicleClass(vehicle)))
+        return;
+
+    const maxVelocity = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fInitialDriveMaxFlatVel') * 0.3704;
+
+    SetVehicleMaxSpeed(vehicle, maxVelocity);
 }, 3500);
