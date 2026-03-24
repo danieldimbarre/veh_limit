@@ -1,9 +1,20 @@
-import { log, TAG } from '@common';
+let lastVehicle: number | null = null;
 
-
-on('onResourceStart', (resourceName: string) => {
-    if (resourceName !== GetCurrentResourceName()) 
+setInterval(() => {
+    if (!IsPedInAnyVehicle(PlayerPedId(), false))
         return;
-    
-    log('[' + TAG + '] Client resource started: ' + resourceName);
-});
+
+    const vehicle = GetVehiclePedIsIn(PlayerPedId(), true);
+
+    if (NetworkGetEntityOwner(vehicle) !== PlayerId())
+        return;
+
+    const maxVelocity = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fInitialDriveMaxFlatVel') * 0.3704;
+
+    if (lastVehicle == vehicle)
+        return;
+
+    SetVehicleMaxSpeed(vehicle, maxVelocity);
+
+    lastVehicle = vehicle;
+}, 3500);
