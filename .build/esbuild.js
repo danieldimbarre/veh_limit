@@ -19,15 +19,7 @@ const watchMode = process.argv.findIndex((arg) => arg === '--watch') >= 0;
             entryPoints: ['./src/client/index.ts'],
             target: ['chrome93'],
             format: 'iife',
-        },
-        {
-            label: 'shared',
-            platform: 'neutral',
-            entryPoints: ['./src/shared/index.ts'],
-            target: ['es2020'],
-            format: 'cjs',
-            noMinify: true,
-        },
+        }
     ];
 
     for (const config of buildConfigs) {
