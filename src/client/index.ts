@@ -1,30 +1,32 @@
-const VEHICLE_CLASSES_IGNORE = [
+const VEHICLE_CLASSES_IGNORE: readonly number[] = [
     13, // Cycles
     14, // Boats
     15, // Helicopters
-    16, // Planes
+    16 // Planes
 ];
 
-let lastVehicle: number | null = null;
+const COEFF = 0.3704; // Convert from GTA units to km/h
 
 setInterval(() => {
-    if (!IsPedInAnyVehicle(PlayerPedId(), false))
+    const ped = PlayerPedId();
+
+    if (!DoesEntityExist(ped) || !IsPedInAnyVehicle(ped, false))
         return;
 
-    const vehicle = GetVehiclePedIsIn(PlayerPedId(), true);
+    const veh = GetVehiclePedIsIn(ped, true);
 
-    if (NetworkGetEntityOwner(vehicle) !== PlayerId())
+    if (!DoesEntityExist(veh))
         return;
 
-    if (lastVehicle == vehicle)
+    if (VEHICLE_CLASSES_IGNORE.includes(GetVehicleClass(veh)))
         return;
 
-    lastVehicle = vehicle;
+    const max_velocity = GetVehicleHandlingFloat(veh, 'CHandlingData', 'fInitialDriveMaxFlatVel') * COEFF;
 
-    if (VEHICLE_CLASSES_IGNORE.includes(GetVehicleClass(vehicle)))
+    if (Entity(veh).state.veh_limit === max_velocity)
         return;
 
-    const maxVelocity = GetVehicleHandlingFloat(vehicle, 'CHandlingData', 'fInitialDriveMaxFlatVel') * 0.3704;
+    Entity(veh).state.set('veh_limit', max_velocity, false);
 
-    SetVehicleMaxSpeed(vehicle, maxVelocity);
+    SetEntityMaxSpeed(veh, max_velocity);
 }, 3500);
