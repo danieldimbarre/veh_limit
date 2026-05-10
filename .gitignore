@@ -37,3 +37,7 @@ report.[0-9]_.[0-9]_.[0-9]_.[0-9]_.json
 
 # Yarn fivem resource file
 .yarn.installed
+
+# IA folder's
+.claude
+.copilot
